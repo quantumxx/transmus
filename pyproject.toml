@@ -33,9 +33,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/raj-mohan/transmus"
-Repository = "https://github.com/raj-mohan/transmus"
-BugTracker = "https://github.com/raj-mohan/transmus/issues"
+Homepage = "https://github.com/quantumxx/transmus"
+Repository = "https://github.com/quantumxx/transmus"
+BugTracker = "https://github.com/quantumxx/transmus/issues"
 
 [project.scripts]
 transmus = "transmus.cli:main"

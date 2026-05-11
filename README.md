@@ -28,7 +28,7 @@ Transmus is a Python CLI tool that lets you transfer your playlists between YouT
 
 ```bash
 # Clone the repository
-git clone https://github.com/raj-mohan/transmus.git
+git clone https://github.com/quantumxx/transmus.git
 cd transmus
 
 # Create and activate a virtual environment (recommended)

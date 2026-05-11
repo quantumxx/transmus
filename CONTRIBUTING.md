@@ -10,7 +10,7 @@ Be respectful, inclusive, and constructive. We're all here to build something us
 
 ### Reporting Bugs
 
-1. Check if the bug has already been reported in [Issues](https://github.com/raj-mohan/transmus/issues)
+1. Check if the bug has already been reported in [Issues](https://github.com/quantumxx/transmus/issues)
 2. If not, create a new issue using the bug report template
 3. Include:
    - Python version and OS
