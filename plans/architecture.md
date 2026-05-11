@@ -29,10 +29,10 @@
 
 **User flow:**
 1. User runs `transmus auth youtube`
-2. CLI provides two options:
-   - **Automatic**: Downloads a browser extension helper that exports cookies
-   - **Manual**: Instructions to copy browser headers into a file
-3. Headers are validated and saved to `~/.transmus/youtube_headers.json`
+2. CLI provides step-by-step instructions to copy the Cookie from browser DevTools (F12 → Network tab → copy Cookie header)
+3. The Cookie is parsed to extract the SAPISID value, which is used to compute the `Authorization` header (SAPISID hash)
+4. Headers are validated and saved to `~/.transmus/youtube_headers.json`
+5. A fallback JSON file method is available for advanced users
 
 **Storage:** `~/.transmus/youtube_headers.json` (sensitive — marked in `.gitignore`)
 

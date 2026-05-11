@@ -32,7 +32,8 @@ git clone https://github.com/quantumxx/transmus.git
 cd transmus
 
 # Create and activate a virtual environment (recommended)
-python -m venv venv
+python3 -m venv venv        # On Linux/Mac
+# python -m venv venv       # On Windows
 source venv/bin/activate    # On Linux/Mac
 # venv\Scripts\activate     # On Windows
 
@@ -48,7 +49,7 @@ pip install -e .
 transmus auth youtube
 ```
 
-This will guide you through exporting your YouTube Music browser cookies. You'll need a browser extension like [Cookie-Editor](https://cookie-editor.com/) or [Get cookies.txt](https://chrome.google.com/webstore/detail/get-cookiestxt/bgaddhkoddajcdgocldbbfleckgcbcid) to export your YouTube Music session headers.
+This will guide you through authenticating with YouTube Music. You'll need to provide your browser's YouTube Music session cookie — the tool will walk you through getting it from your browser's Developer Tools (no extensions required).
 
 ### 2. Set up Spotify
 

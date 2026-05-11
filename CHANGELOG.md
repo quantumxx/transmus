@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0] - 2026-05-11
+
+### Changed
+- Simplified YouTube Music authentication: users now paste their Cookie directly from browser DevTools instead of installing extensions and creating JSON files
+- Removed dead "Get cookies.txt" extension references and links
+- Fixed ytmusicapi documentation links
+- Added automatic SAPISID hash computation from Cookie value (no manual Authorization header needed)
+
+### Added
+- Cookie paste method as the primary authentication flow
+- JSON file method retained as a fallback for advanced users
+
 ## [0.1.0] - 2026-05-11
 
 ### Added
