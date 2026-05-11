@@ -85,6 +85,33 @@ class SpotifyService:
             tracks=tracks,
         )
 
+    def get_liked_tracks(self) -> Playlist:
+        """Fetch the user's Liked Songs as a pseudo-playlist.
+
+        Returns:
+            Playlist object with all liked/saved tracks populated.
+        """
+        tracks = []
+        results = self.client.current_user_saved_tracks(limit=50)
+        while results:
+            for item in results["items"]:
+                track = self._parse_track(item)
+                if track:
+                    tracks.append(track)
+            if results["next"]:
+                results = self.client.next(results)
+            else:
+                break
+
+        return Playlist(
+            id="liked",
+            name="Liked Songs",
+            description="Your Spotify Liked Songs",
+            owner="You",
+            track_count=len(tracks),
+            tracks=tracks,
+        )
+
     def search_track(self, title: str, artist: str) -> Optional[Track]:
         """Search for a track on Spotify.
 

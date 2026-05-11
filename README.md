@@ -12,6 +12,7 @@ Transmus is a Python CLI tool that lets you transfer your playlists between YouT
 ## Features
 
 - **Bidirectional transfer** — YouTube Music → Spotify and Spotify → YouTube Music
+- **Liked Songs support** — Transfer your Liked Songs / Liked Music between platforms
 - **Smart track matching** — Uses fuzzy matching (rapidfuzz) to find the best match even when titles differ
 - **No server costs** — Runs locally on your machine, completely free
 - **Privacy-first** — No data collection, no telemetry, everything stays on your computer
@@ -82,7 +83,17 @@ transmus yt playlists
 transmus spotify playlists
 ```
 
-### 5. Transfer a playlist
+### 5. View your Liked Songs
+
+```bash
+# View YouTube Music Liked Songs
+transmus yt liked
+
+# View Spotify Liked Songs
+transmus spotify liked
+```
+
+### 6. Transfer a playlist
 
 ```bash
 # YouTube Music → Spotify
@@ -90,6 +101,16 @@ transmus transfer yt-to-spotify PLAYLIST_ID
 
 # Spotify → YouTube Music
 transmus transfer spotify-to-yt PLAYLIST_ID
+```
+
+### 7. Transfer your Liked Songs
+
+```bash
+# YouTube Music Liked Songs → Spotify
+transmus transfer yt-liked-to-spotify
+
+# Spotify Liked Songs → YouTube Music
+transmus transfer spotify-liked-to-yt
 ```
 
 ## Command Reference
@@ -101,10 +122,14 @@ transmus transfer spotify-to-yt PLAYLIST_ID
 | `transmus status` | Check authentication status |
 | `transmus yt playlists` | List YouTube Music playlists |
 | `transmus yt playlist <id>` | View tracks in a YT Music playlist |
+| `transmus yt liked` | View your YouTube Music Liked Songs |
 | `transmus spotify playlists` | List Spotify playlists |
 | `transmus spotify playlist <id>` | View tracks in a Spotify playlist |
+| `transmus spotify liked` | View your Spotify Liked Songs |
 | `transmus transfer yt-to-spotify <id>` | Transfer YT Music → Spotify |
 | `transmus transfer spotify-to-yt <id>` | Transfer Spotify → YT Music |
+| `transmus transfer yt-liked-to-spotify` | Transfer YT Liked Songs → Spotify |
+| `transmus transfer spotify-liked-to-yt` | Transfer Spotify Liked Songs → YT |
 
 ### Options
 

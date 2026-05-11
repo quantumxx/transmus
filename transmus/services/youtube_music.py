@@ -79,6 +79,30 @@ class YouTubeMusicService:
             tracks=tracks,
         )
 
+    def get_liked_tracks(self) -> Playlist:
+        """Fetch the user's Liked Music as a pseudo-playlist.
+
+        YouTube Music stores liked songs under the special playlist ID "LM".
+
+        Returns:
+            Playlist object with all liked tracks populated.
+        """
+        raw = self.client.get_liked_songs(limit=None)
+        tracks = []
+        for item in raw.get("tracks", []):
+            track = self._parse_track(item)
+            if track:
+                tracks.append(track)
+
+        return Playlist(
+            id="LM",
+            name="Liked Music",
+            description="Your YouTube Music Liked Songs",
+            owner="You",
+            track_count=len(tracks),
+            tracks=tracks,
+        )
+
     def search_track(self, title: str, artist: str) -> Optional[Track]:
         """Search for a track on YouTube Music.
 

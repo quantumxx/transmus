@@ -7,10 +7,14 @@ Defines the click command tree:
     ├── status
     ├── yt playlists
     ├── yt playlist <id>
+    ├── yt liked
     ├── spotify playlists
     ├── spotify playlist <id>
+    ├── spotify liked
     ├── transfer yt-to-spotify <id>
-    └── transfer spotify-to-yt <id>
+    ├── transfer spotify-to-yt <id>
+    ├── transfer yt-liked-to-spotify
+    └── transfer spotify-liked-to-yt
 """
 
 from __future__ import annotations
@@ -26,6 +30,8 @@ from transmus.services.spotify_service import SpotifyService
 from transmus.transfer import (
     transfer_youtube_to_spotify,
     transfer_spotify_to_youtube,
+    transfer_youtube_liked_to_spotify,
+    transfer_spotify_liked_to_youtube,
 )
 
 
@@ -180,6 +186,25 @@ def yt_playlist(ctx: click.Context, playlist_id: str) -> None:
         click.echo(f"  {i:3d}. {track}")
 
 
+@yt.command("liked")
+@click.pass_context
+def yt_liked(ctx: click.Context) -> None:
+    """View your YouTube Music Liked Songs."""
+    ctx_obj = ctx.ensure_object(TransmusContext)
+    try:
+        playlist = ctx_obj.youtube.get_liked_tracks()
+    except RuntimeError as e:
+        click.secho(f"Error: {e}", fg="red", bold=True)
+        sys.exit(1)
+
+    click.echo(f"Playlist: {playlist.name}")
+    click.echo(f"Tracks: {playlist.track_count}")
+    click.echo("-" * 60)
+
+    for i, track in enumerate(playlist.tracks, 1):
+        click.echo(f"  {i:3d}. {track}")
+
+
 # ── Spotify Commands ───────────────────────────────────────────────────────
 
 
@@ -229,6 +254,25 @@ def sp_playlist(ctx: click.Context, playlist_id: str) -> None:
     click.echo(f"Tracks: {playlist.track_count}")
     if playlist.description:
         click.echo(f"Description: {playlist.description}")
+    click.echo("-" * 60)
+
+    for i, track in enumerate(playlist.tracks, 1):
+        click.echo(f"  {i:3d}. {track}")
+
+
+@spotify.command("liked")
+@click.pass_context
+def sp_liked(ctx: click.Context) -> None:
+    """View your Spotify Liked Songs."""
+    ctx_obj = ctx.ensure_object(TransmusContext)
+    try:
+        playlist = ctx_obj.spotify.get_liked_tracks()
+    except RuntimeError as e:
+        click.secho(f"Error: {e}", fg="red", bold=True)
+        sys.exit(1)
+
+    click.echo(f"Playlist: {playlist.name}")
+    click.echo(f"Tracks: {playlist.track_count}")
     click.echo("-" * 60)
 
     for i, track in enumerate(playlist.tracks, 1):
@@ -310,6 +354,74 @@ def transfer_spotify_to_yt(
     try:
         result = transfer_spotify_to_youtube(
             playlist_id=playlist_id,
+            new_name=name,
+            public=public,
+            progress_callback=progress,
+        )
+    except RuntimeError as e:
+        click.secho(f"\nError: {e}", fg="red", bold=True)
+        sys.exit(1)
+
+    click.echo()
+    click.secho("✓ Transfer Complete!", fg="green", bold=True)
+    click.echo(result.summary())
+
+
+@transfer.command(name="yt-liked-to-spotify")
+@click.option("--name", "-n", help="New name for the Spotify playlist")
+@click.option("--public/--private", default=True, help="Playlist visibility")
+@click.pass_context
+def transfer_yt_liked_to_spotify(
+    ctx: click.Context,
+    name: str | None,
+    public: bool,
+) -> None:
+    """Transfer your YouTube Music Liked Songs to a new Spotify playlist."""
+    click.echo("Starting transfer: YouTube Music Liked Songs → Spotify")
+    click.echo("=" * 50)
+
+    def progress(msg: str, pct: int | None) -> None:
+        if pct is not None:
+            click.echo(f"[{pct:3d}%] {msg}")
+        else:
+            click.echo(f"       {msg}")
+
+    try:
+        result = transfer_youtube_liked_to_spotify(
+            new_name=name,
+            public=public,
+            progress_callback=progress,
+        )
+    except RuntimeError as e:
+        click.secho(f"\nError: {e}", fg="red", bold=True)
+        sys.exit(1)
+
+    click.echo()
+    click.secho("✓ Transfer Complete!", fg="green", bold=True)
+    click.echo(result.summary())
+
+
+@transfer.command(name="spotify-liked-to-yt")
+@click.option("--name", "-n", help="New name for the YouTube Music playlist")
+@click.option("--public/--private", default=True, help="Playlist visibility")
+@click.pass_context
+def transfer_sp_liked_to_yt(
+    ctx: click.Context,
+    name: str | None,
+    public: bool,
+) -> None:
+    """Transfer your Spotify Liked Songs to a new YouTube Music playlist."""
+    click.echo("Starting transfer: Spotify Liked Songs → YouTube Music")
+    click.echo("=" * 50)
+
+    def progress(msg: str, pct: int | None) -> None:
+        if pct is not None:
+            click.echo(f"[{pct:3d}%] {msg}")
+        else:
+            click.echo(f"       {msg}")
+
+    try:
+        result = transfer_spotify_liked_to_youtube(
             new_name=name,
             public=public,
             progress_callback=progress,
